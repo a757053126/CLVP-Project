@@ -34,6 +34,8 @@ public Action:OnTakeDamage(victim, &attacker, &inflictor, &Float:damage, &damage
 	
 	if (!StrEqual(wpname, "weapon_tank_claw", false) && !StrEqual(wpname, "tank_rock", false))
 	{
+		if (damage <= 25.0) return Plugin_Continue;
+		
 		//更改铁对生还者的伤害
 		damage = 25.0;
 		return Plugin_Changed;
