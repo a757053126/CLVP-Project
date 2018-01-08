@@ -43,6 +43,8 @@ stock DisposeItemTake(client)
 		new weapon = GetPlayerWeaponSlot(target, i);
 		if (IsValidEntity(weapon) && IsValidEdict(weapon))
 		{
+			if (SkipThisWeapon(client, i, weapon)) continue;
+			
 			RemovePlayerItem(target, weapon); //删除电脑的物品
 			EquipPlayerWeapon(client, weapon); //装备物品到玩家身上
 			ClientCommand(client, "slot%i", i + 1); //切换到拿过来的物品
@@ -64,6 +66,19 @@ stock bool:InTransDistance(client, target)
 	GetClientAbsOrigin(target, Origin2);
 	
 	if (GetVectorDistance(Origin1, Origin2, true) < 48400)
+	{return true;} else {return false;}
+}
+
+stock bool:SkipThisWeapon(client, index, weapon)
+{
+	new slot = GetPlayerWeaponSlot(client, index);
+	if (!IsValidEntity(slot) || !IsValidEdict(slot)) return false;
+	
+	decl String:wpname1[48], String:wpname2[48];
+	GetEntityClassname(slot, wpname1, sizeof(wpname1));
+	GetEntityClassname(weapon, wpname2, sizeof(wpname2));
+	
+	if (StrEqual(wpname1, wpname2, false))
 	{return true;} else {return false;}
 }
 
